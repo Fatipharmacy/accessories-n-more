@@ -2,7 +2,7 @@
 
 import { Order, User } from "@prisma/client";
 import Heading from "@/app/components/heading";
-import { User, Mail, Calendar, ShoppingCart, CheckCircle, XCircle } from "lucide-react";
+import { User as UserIcon, Mail, Calendar, ShoppingCart, CheckCircle, XCircle } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import axios from "axios";
@@ -59,7 +59,7 @@ const ManageUsersClient: React.FC<ManageUsersClientProps> = ({ users, orders }) 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
           <div className="flex items-center gap-2">
-            <User className="text-blue-600 text-2xl" />
+            <UserIcon className="text-blue-600 text-2xl" />
             <div>
               <p className="text-xs text-slate-600">Total Users</p>
               <p className="text-2xl font-bold text-blue-600">{users.length}</p>
@@ -88,7 +88,7 @@ const ManageUsersClient: React.FC<ManageUsersClientProps> = ({ users, orders }) 
         </div>
         <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
           <div className="flex items-center gap-2">
-            <User className="text-amber-600 text-2xl" />
+            <UserIcon className="text-amber-600 text-2xl" />
             <div>
               <p className="text-xs text-slate-600">Admin Users</p>
               <p className="text-2xl font-bold text-amber-600">
@@ -102,7 +102,7 @@ const ManageUsersClient: React.FC<ManageUsersClientProps> = ({ users, orders }) 
       {/* Users List */}
       {users.length === 0 ? (
         <div className="text-center py-16 bg-slate-50 rounded-lg">
-          <User className="text-6xl text-slate-300 mx-auto mb-4" />
+          <UserIcon className="text-6xl text-slate-300 mx-auto mb-4" />
           <p className="text-slate-500 text-lg">No users found</p>
         </div>
       ) : (
@@ -120,7 +120,7 @@ const ManageUsersClient: React.FC<ManageUsersClientProps> = ({ users, orders }) 
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center">
-                        <User className="text-2xl text-slate-600" />
+                        <UserIcon className="text-2xl text-slate-600" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-lg text-slate-800">{user.name}</h3>

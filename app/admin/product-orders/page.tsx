@@ -1,5 +1,5 @@
 import Container from "@/app/components/container";
-import OrderListClient from "./order-list-client";
+import OrderListClient from "../order-list/order-list-client";
 import getCurrentUser from "@/actions/get-current-user";
 import NullData from "@/app/components/null-data";
 import getOrders from "@/actions/get-orders";
