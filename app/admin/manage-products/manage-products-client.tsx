@@ -20,8 +20,6 @@ import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { deleteObject, getStorage, ref } from "firebase/storage";
-import firebaseApp from "@/libs/firebase";
 import AlertDialog from "@/app/components/alert-dialog";
 
 interface ManageProductsClientProps {
@@ -37,7 +35,6 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({
   const [imagesToDelete, setImagesToDelete] = useState([]);
   const [loadingActions, setLoadingActions] = useState<{ [key: string]: boolean }>({});
   const router = useRouter();
-  const storage = getStorage(firebaseApp);
   let rows: any = [];
 
   if (products) {
@@ -127,6 +124,11 @@ const ManageProductsClient: React.FC<ManageProductsClientProps> = ({
 
     const handleImageDelete = async () => {
       try {
+        // Dynamic import to avoid webpack issues
+        const { getStorage, ref, deleteObject } = await import("firebase/storage");
+        const firebaseApp = (await import("@/libs/firebase")).default;
+        const storage = getStorage(firebaseApp);
+        
         for (const item of images) {
           if (item.image) {
             const imageRef = ref(storage, item.image);

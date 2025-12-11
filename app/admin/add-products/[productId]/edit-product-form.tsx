@@ -12,13 +12,6 @@ import { colors } from "@/utils/colors";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import firebaseApp from "@/libs/firebase";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Product } from "@prisma/client";
