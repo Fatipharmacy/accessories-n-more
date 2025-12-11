@@ -33,7 +33,7 @@ export default function AdminClient({
   initialProductData: any[];
   initialUserGrowthData: any[];
   initialOrderStatusData: any[];
-  currentUser: SafeUser | null;
+  currentUser: SafeUser;
 }) {
   const [timeRange, setTimeRange] = useState<TimeRange>("7days");
   const [revenueData, setRevenueData] = useState(initialRevenueData);
