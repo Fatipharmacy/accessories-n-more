@@ -8,7 +8,13 @@ import { TimeRange } from "@/actions/get-revenue-graph-data";
 import ProductPerformanceChart from "./product-performance-chart";
 import UserGrowthChart from "./user-growth-chart";
 import OrderStatusChart from "./order-status-chart";
-import { User } from "@prisma/client";
+import { User, Role } from "@prisma/client";
+
+type SafeUser = Omit<User, "createdAt" | "updatedAt" | "emailVerified"> & {
+  createdAt: string;
+  updatedAt: string;
+  emailVerified: string | null;
+};
 
 export default function AdminClient({
   initialProducts,
@@ -27,7 +33,7 @@ export default function AdminClient({
   initialProductData: any[];
   initialUserGrowthData: any[];
   initialOrderStatusData: any[];
-  currentUser: User;
+  currentUser: SafeUser | null;
 }) {
   const [timeRange, setTimeRange] = useState<TimeRange>("7days");
   const [revenueData, setRevenueData] = useState(initialRevenueData);
