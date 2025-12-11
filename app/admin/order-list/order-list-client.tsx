@@ -7,7 +7,7 @@ import { CheckCircle, X, Printer } from "lucide-react";
 import Button from "@/app/components/button";
 
 type OrderWithUser = Order & {
-  user: User;
+  user: User | null;
 };
 
 interface OrderListClientProps {
@@ -53,7 +53,7 @@ const OrderListClient: React.FC<OrderListClientProps> = ({ orders }) => {
                       </h3>
                       <p className="text-sm">
                         <span className="font-medium">Name:</span>{" "}
-                        {order.address?.name || order.user.name || "N/A"}
+                        {order.address?.name || order.user?.name || order.guestName || "Guest"}
                       </p>
                       {order.address?.phone && (
                         <p className="text-sm">
