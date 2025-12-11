@@ -9,8 +9,9 @@ import {
   Legend,
   LineElement,
   PointElement,
+  ChartData,
 } from "chart.js";
-import { Bar, Line } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import { useState } from "react";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, LineElement, PointElement);
@@ -38,7 +39,7 @@ interface RevenueGraphProps {
 const RevenueGraph: React.FC<RevenueGraphProps> = ({ data, onRangeChange, currentRange }) => {
   const labels = data.map((item) => item.label);
 
-  const chartData = {
+  const chartData: ChartData<'bar' | 'line'> = {
     labels: labels,
     datasets: [
       {
@@ -196,7 +197,7 @@ const RevenueGraph: React.FC<RevenueGraphProps> = ({ data, onRangeChange, curren
           </button>
         </div>
       </div>
-      <Bar data={chartData} options={options} />
+      <Chart type="bar" data={chartData} options={options} />
     </div>
   );
 };
