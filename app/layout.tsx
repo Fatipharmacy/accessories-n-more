@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.className}, flex flex-col min-h-screen text-zinc-800 bg-white`}
+        className={`${outfit.className} flex flex-col min-h-screen text-zinc-800 bg-white overflow-x-hidden`}
       >
         <Toaster
           containerStyle={{ top: "88px" }}
