@@ -21,8 +21,6 @@ const Product = async ({ params }: { params: ItemParams }) => {
   const serializedProduct = {
     ...product,
     dmc: product.dmc ?? 0,
-    createdAt: product.createdAt?.toISOString() ?? new Date().toISOString(),
-    updatedAt: product.updatedAt?.toISOString() ?? new Date().toISOString(),
     reviews: product.reviews.map((review: any) => ({
       ...review,
       createdDate: review.createdDate?.toISOString() ?? new Date().toISOString(),
