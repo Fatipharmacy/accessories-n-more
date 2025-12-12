@@ -16,6 +16,7 @@ if (!admin.apps.length) {
 
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   });
 }
 
@@ -113,5 +114,9 @@ export const sendMulticastNotification = async (
     throw error;
   }
 };
+
+export function getAdminStorage() {
+  return admin.storage();
+}
 
 export default admin;

@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
-import firebaseApp from "@/libs/firebase";
+import * as admin from "firebase-admin";
+import { getAdminStorage } from "@/libs/firebase-admin";
 
 // POST - Upload image to Firebase Storage
 export async function POST(request: NextRequest) {
@@ -24,20 +18,26 @@ export async function POST(request: NextRequest) {
 
     // Convert File to Buffer
     const bytes = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(bytes);
+    const buffer = Buffer.from(bytes);
 
-    // Upload to Firebase Storage
+    // Upload to Firebase Storage using Admin SDK
     const fileName = `${Date.now()}-${file.name}`;
-    const storage = getStorage(firebaseApp);
-    const storageRef = ref(storage, `products/${fileName}`);
+    const bucket = getAdminStorage().bucket();
+    const fileRef = bucket.file(`products/${fileName}`);
     
     // Upload file
-    await uploadBytesResumable(storageRef, uint8Array, {
+    await fileRef.save(buffer, {
       contentType: file.type,
+      metadata: {
+        firebaseStorageDownloadTokens: crypto.randomUUID(),
+      },
     });
 
+    // Make file publicly accessible
+    await fileRef.makePublic();
+
     // Get download URL
-    const downloadURL = await getDownloadURL(storageRef);
+    const downloadURL = `https://storage.googleapis.com/${bucket.name}/${fileRef.name}`;
 
     return NextResponse.json({
       url: downloadURL,
@@ -64,9 +64,21 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const storage = getStorage(firebaseApp);
-    const imageRef = ref(storage, url);
-    await deleteObject(imageRef);
+    // Extract file path from URL
+    const bucket = getAdminStorage().bucket();
+    const urlParts = url.split(`${bucket.name}/`);
+    const filePath = urlParts[1];
+
+    if (!filePath) {
+      return NextResponse.json(
+        { error: "Invalid URL format" },
+        { status: 400 }
+      );
+    }
+
+    // Delete file
+    const fileRef = bucket.file(filePath);
+    await fileRef.delete();
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
