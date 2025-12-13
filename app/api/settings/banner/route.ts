@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import getCurrentUser from "@/actions/get-current-user";
 import prisma from "@/libs/prismadb";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 export async function PUT(request: Request) {
   const currentUser = await getCurrentUser();
 
