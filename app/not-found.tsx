@@ -44,7 +44,7 @@ export default function NotFound() {
           404
         </h1>
         <h2 style={{ fontSize: "2rem", fontWeight: 500, marginBottom: "1.5rem" }}>
-          Oops... we can't find the window of our shop
+          Oops... we can&apos;t find the window of our shop
         </h2>
         <a
           href="/"

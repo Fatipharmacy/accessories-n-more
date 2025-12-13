@@ -12,7 +12,7 @@ interface FooterProps {
   whatsappNumber?: string | null;
 }
 
-const Footer: React.FC<FooterProps> = ({ whatsappNumber }) => {
+const Footer: React.FC<FooterProps> = ({ whatsappNumber = null }) => {
   const highlight = "hover:text-slate-50 transition";
 
   const handleWhatsAppClick = () => {

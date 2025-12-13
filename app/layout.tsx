@@ -5,10 +5,10 @@ import NavBar from "./components/nav/nav-bar";
 import Footer from "./components/footer/footer";
 import CartProvider from "@/provider/cart-provider";
 import { Toaster } from "react-hot-toast";
-import getCurrentUser from "@/actions/get-current-user";
-import CustomerNotifications from "./components/customer/customer-notifications";
-import TopLoader from "./components/top-loader";
-import getSettings from "@/actions/get-settings";
+// import getCurrentUser from "@/actions/get-current-user";
+// import CustomerNotifications from "./components/customer/customer-notifications";
+// import TopLoader from "./components/top-loader";
+// import getSettings from "@/actions/get-settings";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -17,14 +17,12 @@ export const metadata: Metadata = {
   description: "WindowChop - The Easiest Shop On Campus",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const currentUser = await getCurrentUser();
-  const settings = await getSettings();
-
+  // TODO: Move user/settings fetching into pages or context providers as needed
   return (
     <html lang="en">
       <body
@@ -35,7 +33,6 @@ export default async function RootLayout({
           toastOptions={{
             position: "top-right",
             duration: 3000,
-
             style: {
               background: "rgb(51, 65, 85)",
               color: "#fff",
@@ -44,15 +41,14 @@ export default async function RootLayout({
             },
           }}
         />
-
         <CartProvider>
-          <TopLoader />
-          {currentUser && currentUser.role !== "ADMIN" && (
+          {/* <TopLoader /> */}
+          {/* {currentUser && currentUser.role !== "ADMIN" && (
             <CustomerNotifications userId={currentUser.id} />
-          )}
-          <NavBar currentUser={currentUser} nextDeliveryTime={settings?.nextDeliveryTime?.toISOString() || null} />
+          )} */}
+          <NavBar /* currentUser={currentUser} nextDeliveryTime={settings?.nextDeliveryTime?.toISOString() || null} */ />
           <main className="flex-grow">{children}</main>
-          <Footer whatsappNumber={(settings as any)?.whatsappNumber} />
+          <Footer /* whatsappNumber={(settings as any)?.whatsappNumber} */ />
         </CartProvider>
       </body>
     </html>

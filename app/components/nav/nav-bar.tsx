@@ -18,11 +18,11 @@ import NotificationButton from "../notification-button";
 const exo = Monoton({ subsets: ["latin"], weight: ["400"] });
 
 interface NavBarPros {
-  currentUser: SafeUser | null;
+  currentUser?: SafeUser | null;
   nextDeliveryTime?: string | null;
 }
 
-const NavBar: React.FC<NavBarPros> = ({ currentUser, nextDeliveryTime }) => {
+const NavBar: React.FC<NavBarPros> = ({ currentUser = null, nextDeliveryTime = null }) => {
   const [searchBar, setSearchBar] = useState<boolean>(false);
   const router = useRouter();
   const path = usePathname();
