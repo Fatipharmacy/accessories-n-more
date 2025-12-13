@@ -195,13 +195,17 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         )}
         
-        <HomeBanner 
-          title={settings?.bannerTitle}
-          subtitle={settings?.bannerSubtitle}
-          discount={settings?.bannerDiscount}
-          image={settings?.bannerImage || undefined}
-          colors={settings?.bannerColors}
-        />
+
+        {/* Only show HomeBanner if bannerVisible is true */}
+        {settings?.bannerVisible && (
+          <HomeBanner 
+            title={settings?.bannerTitle}
+            subtitle={settings?.bannerSubtitle}
+            discount={settings?.bannerDiscount}
+            image={settings?.bannerImage || undefined}
+            colors={settings?.bannerColors}
+          />
+        )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 sm:gap-8">
           {products.map((product: any) => {

@@ -136,6 +136,7 @@ model Settings {
   bannerDiscount    String?
   bannerImage       String?
   bannerColors      String[]  @default([])
+  bannerVisible     Boolean   @default(true)
   updatedAt         DateTime  @updatedAt
 }
 

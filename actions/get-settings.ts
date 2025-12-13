@@ -22,6 +22,7 @@ export default async function getSettings() {
         bannerImage: null,
         bannerColors: ["blue", "indigo"],
         updatedAt: new Date(),
+        bannerVisible: true,
       };
     }
 
@@ -40,6 +41,7 @@ export default async function getSettings() {
       bannerImage: settings.bannerImage || null,
       bannerColors: settings.bannerColors || ["blue", "indigo"],
       updatedAt: settings.updatedAt,
+      bannerVisible: settings.bannerVisible ?? true,
     };
   } catch (error) {
     console.error("Error fetching settings:", error);
@@ -58,6 +60,7 @@ export default async function getSettings() {
       bannerImage: null,
       bannerColors: ["blue", "indigo"],
       updatedAt: new Date(),
+      bannerVisible: true,
     };
   }
 }

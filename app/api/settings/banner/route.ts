@@ -2,13 +2,6 @@ import { NextResponse } from "next/server";
 import getCurrentUser from "@/actions/get-current-user";
 import prisma from "@/libs/prismadb";
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-};
 
 export async function PUT(request: Request) {
   const currentUser = await getCurrentUser();
@@ -19,7 +12,7 @@ export async function PUT(request: Request) {
 
   try {
     const body = await request.json();
-    const { bannerTitle, bannerSubtitle, bannerDiscount, bannerImage, bannerColors } = body;
+    const { bannerTitle, bannerSubtitle, bannerDiscount, bannerImage, bannerColors, bannerVisible } = body;
 
     if (!bannerTitle || !bannerSubtitle || !bannerDiscount) {
       return NextResponse.json({ error: "All banner fields are required" }, { status: 400 });
@@ -39,6 +32,10 @@ export async function PUT(request: Request) {
       updateData.bannerColors = bannerColors;
     }
 
+    if (typeof bannerVisible === 'boolean') {
+      updateData.bannerVisible = bannerVisible;
+    }
+
     await prisma.settings.upsert({
       where: { id: "settings" },
       update: updateData,
@@ -48,6 +45,7 @@ export async function PUT(request: Request) {
         bankAccountNumber: "",
         accountHolderName: "",
         ...updateData,
+        bannerVisible: typeof bannerVisible === 'boolean' ? bannerVisible : true,
       },
     });
 
