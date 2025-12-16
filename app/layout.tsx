@@ -14,7 +14,7 @@ const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
 export const metadata: Metadata = {
   title: "easyByFar",
-  description: "The Easiest, Cheapest, Shop On Campus",
+  description: "No More Queueing to Buy Stuff!",
 };
 
 export default function RootLayout({
