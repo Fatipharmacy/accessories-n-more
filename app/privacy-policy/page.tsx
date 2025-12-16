@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
         <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
         <p className="mb-4">Last updated: December 16, 2025</p>
         <p className="mb-4">
-          This Privacy Policy describes how easyByFar ("we", "us", or "our") collects, uses, and protects your personal information when you use our website and services. We are committed to safeguarding your privacy and complying with all applicable data protection laws, including those required by Google.
+          This Privacy Policy describes how easyByFar (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) collects, uses, and protects your personal information when you use our website and services. We are committed to safeguarding your privacy and complying with all applicable data protection laws, including those required by Google.
         </p>
         <h2 className="text-xl font-semibold mt-6 mb-2">1. Information We Collect</h2>
         <ul className="list-disc pl-6 mb-4">
@@ -48,7 +48,7 @@ export default function PrivacyPolicy() {
           <li>You may opt out of marketing communications at any time.</li>
           <li>You may disable cookies in your browser settings, but some features may not work as intended.</li>
         </ul>
-        <h2 className="text-xl font-semibold mt-6 mb-2">7. Children's Privacy</h2>
+        <h2 className="text-xl font-semibold mt-6 mb-2">7. Children&apos;s Privacy</h2>
         <p className="mb-4">
           Our services are not intended for children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us to have it removed.
         </p>
