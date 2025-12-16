@@ -104,6 +104,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, spf }) => {
     });
   }, [cartProduct]);
 
+  // Get product link for sharing
+  const productLink = typeof window !== 'undefined'
+    ? `${window.location.origin}/product/${product.id}`
+    : '';
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:mt-6">
       <div>
@@ -160,6 +165,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, spf }) => {
         <Horizontal />
 
         <div className="flex flex-col gap-1">
+          {/* WhatsApp Share Link */}
+          <a
+            href={`https://wa.me/?text=${encodeURIComponent(productLink)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-2 inline-block text-green-600 hover:text-green-800 text-xs font-medium"
+          >
+            Share on WhatsApp
+          </a>
           <SetColor
             images={product.images}
             cartProduct={cartProduct}
