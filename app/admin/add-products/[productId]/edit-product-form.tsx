@@ -94,13 +94,40 @@ const EditProductForm = ({ product }: { product: Product }) => {
       return toast.error("No selected image!");
     }
 
+    // 1. Find removed images (present in oldImages but not in new images by color)
+    const newColors = (data.images || []).map((img: any) => img.color);
+    const removedImages = (oldImages || []).filter(
+      (oldImg) => !newColors.includes(oldImg.color)
+    );
+
+    // 2. Delete removed images from storage (call DELETE /api/upload)
+    if (removedImages.length > 0) {
+      await Promise.all(
+        removedImages.map(async (img) => {
+          if (img.image) {
+            try {
+              await fetch("/api/upload", {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: img.image }),
+              });
+            } catch (e) {
+              // Log but don't block update
+              console.error("Failed to delete old image", img.image, e);
+            }
+          }
+        })
+      );
+    }
+
+    // 3. Upload new images (if any)
     if (data.images && data.images.length > 0) {
       const handleImageUploads = async () => {
         toast("Editing product, please wait...");
         try {
           for (const item of data.images) {
-            if (item.image) {
-              // Upload to server API
+            if (item.image && typeof item.image !== "string") {
+              // Only upload if it's a new File (not a string URL)
               const formData = new FormData();
               formData.append("file", item.image);
               formData.append("color", item.color);
@@ -120,6 +147,9 @@ const EditProductForm = ({ product }: { product: Product }) => {
                 image: url,
               });
               console.log("File available at", url);
+            } else if (item.image && typeof item.image === "string") {
+              // Keep existing image URLs
+              uploadedImages.push(item);
             }
           }
           return true; // Upload successful
@@ -130,7 +160,7 @@ const EditProductForm = ({ product }: { product: Product }) => {
           return false; // Upload failed
         }
       };
-      
+
       const uploadSuccess = await handleImageUploads();
       if (!uploadSuccess) {
         return; // Stop if upload failed
@@ -139,11 +169,10 @@ const EditProductForm = ({ product }: { product: Product }) => {
 
     const dmc = data.dmc === "" || data.dmc === 0 ? 0 : Number(data.dmc);
 
-    const mergedImages = [...product.images, ...uploadedImages];
-
+    // 4. Save only the uploadedImages (new + kept)
     const productData = {
       ...data,
-      images: mergedImages,
+      images: uploadedImages,
       dmc: dmc,
       stock: data.stock !== undefined ? Number(data.stock) : undefined,
       remainingStock:
