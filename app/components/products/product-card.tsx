@@ -80,7 +80,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="w-full h-full object-cover"
-              priority
+              loading="lazy"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">

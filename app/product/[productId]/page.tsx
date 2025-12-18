@@ -63,7 +63,7 @@ const Product = async ({ params }: { params: ItemParams }) => {
   return (
     <div className="p-8">
       <Container>
-        <ProductDetails product={serializedProduct} spf={settings.spf} />
+        <ProductDetails product={serializedProduct} />
         <div className="flex flex-col-reverse sm:flex-row mt-12 sm:mt-20 gap-4">
           <div className="w-full sm:w-1/2">
             <AddRating product={serializedProduct} user={user as any} />
