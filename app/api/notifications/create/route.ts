@@ -1,34 +1,28 @@
-import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
-const MONGO_URI = process.env.DATABASE_URL?.replace("?replicaSet=rs0", "") || "mongodb://localhost:27017/millionare-ecom-lifeplan";
+import prismadb from "@/libs/prismadb";
+
 
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { title, body: message, orderId } = body;
+    const { title, body: message, orderId, userId } = body;
 
-    if (!title || !message) {
-      return NextResponse.json({ error: "Missing title or body" }, { status: 400 });
+    if (!title || !message || !userId) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const mongoClient = new MongoClient(MONGO_URI);
-    await mongoClient.connect();
-    const db = mongoClient.db("windowshopdb");
-
-    const notification = await db.collection("Notification").insertOne({
-      title,
-      body: message,
-      orderId: orderId || null,
-      read: false,
-      createdAt: new Date(),
+    const notification = await prismadb.notification.create({
+      data: {
+        userId,
+        title,
+        body: message,
+        orderId: orderId || undefined,
+        read: false,
+      },
     });
 
-    const insertedNotification = await db.collection("Notification").findOne({ _id: notification.insertedId });
-    
-    await mongoClient.close();
-
-    return NextResponse.json(insertedNotification);
+    return NextResponse.json(notification);
   } catch (error) {
     console.error("Create notification error:", error);
     return NextResponse.json({ error: "Failed to create notification" }, { status: 500 });

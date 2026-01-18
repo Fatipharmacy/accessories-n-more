@@ -1,7 +1,7 @@
+
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/actions/get-current-user";
-import { getMongoDb } from "@/libs/mongodb";
-import { ObjectId } from "mongodb";
+import prismadb from "@/libs/prismadb";
 
 export async function PUT(request: Request) {
   const currentUser = await getCurrentUser();
@@ -21,23 +21,12 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Invalid role" }, { status: 400 });
     }
 
-    // Use MongoDB native driver to avoid transaction requirement
-    const db = await getMongoDb();
-    const result = await db.collection("User").updateOne(
-      { _id: new ObjectId(userId) },
-      { 
-        $set: { 
-          role,
-          updatedAt: new Date()
-        } 
-      }
-    );
+    const user = await prismadb.user.update({
+      where: { id: userId },
+      data: { role },
+    });
 
-    if (result.matchedCount === 0) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true, message: "User role updated successfully" });
+    return NextResponse.json({ success: true, message: "User role updated successfully", user });
   } catch (error) {
     console.error("Error updating user role:", error);
     return NextResponse.json({ error: "Failed to update user role" }, { status: 500 });

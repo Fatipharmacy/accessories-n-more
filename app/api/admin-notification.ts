@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getMongoDb } from "@/libs/mongodb";
+import prisma from "@/libs/mongodb";
 import { sendMulticastNotification } from "@/libs/firebase-admin";
 
 export async function POST(request: Request) {
@@ -9,10 +9,21 @@ export async function POST(request: Request) {
     if (!title || !message) {
       return NextResponse.json({ error: "Missing title or body" }, { status: 400 });
     }
-    const db = await getMongoDb();
-    // Find all admin users with fcmToken
-    const admins = await db.collection("User").find({ role: "ADMIN", fcmToken: { $exists: true, $ne: null } }).toArray();
-    const tokens = admins.map((admin: any) => admin.fcmToken).filter(Boolean);
+    // Find all admin users with fcmToken using Prisma/Postgres
+    const admins = await prisma.user.findMany({
+      where: {
+        role: "ADMIN",
+        fcmToken: {
+          not: null,
+        },
+      },
+      select: {
+        fcmToken: true,
+      },
+    });
+    const tokens = admins
+      .map((admin) => admin.fcmToken)
+      .filter((token): token is string => typeof token === "string");
     if (!tokens.length) {
       return NextResponse.json({ error: "No admin FCM tokens found" }, { status: 404 });
     }

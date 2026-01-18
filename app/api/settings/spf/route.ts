@@ -1,8 +1,8 @@
-import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/actions/get-current-user";
 
-const MONGO_URI = process.env.DATABASE_URL?.replace("?replicaSet=rs0", "") || "mongodb://localhost:27017/millionare-ecom-lifeplan";
+import prismadb from "@/libs/prismadb";
+
 
 export async function PUT(request: Request) {
   const currentUser = await getCurrentUser();
@@ -18,27 +18,22 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Invalid SPF value" }, { status: 400 });
   }
 
-  const mongoClient = new MongoClient(MONGO_URI);
-  await mongoClient.connect();
-  const db = mongoClient.db("windowshopdb");
 
   try {
-    await db.collection("Settings").updateOne(
-      { _id: "settings" } as any,
-      { 
-        $set: { 
-          spf: spf,
-          updatedAt: new Date()
-        } 
+    // There should only be one settings row, so upsert by id
+    const settings = await prismadb.settings.upsert({
+      where: { id: "settings" },
+      update: { spf: spf },
+      create: {
+        id: "settings",
+        bankName: "",
+        bankAccountNumber: "",
+        accountHolderName: "",
+        spf: spf,
       },
-      { upsert: true }
-    );
-
-    await mongoClient.close();
-
-    return NextResponse.json({ success: true });
+    });
+    return NextResponse.json({ success: true, settings });
   } catch (error) {
-    await mongoClient.close();
     console.error("Update SPF error:", error);
     return NextResponse.json({ error: "Failed to update SPF" }, { status: 500 });
   }

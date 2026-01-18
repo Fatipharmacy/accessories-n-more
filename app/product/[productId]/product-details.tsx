@@ -73,7 +73,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       image: ""
     },
     quantity: 1,
-    price: product.price,
+    price: product.price - (product.discount || 0),
     dmc: product.dmc || 0,
     remainingStock: product.remainingStock ?? product.stock ?? 0,
   });
@@ -113,7 +113,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     setCartProduct((prev) => {
       return { ...prev, quantity: prev.quantity + 1 };
     });
-  }, [cartProduct]);
+  }, [cartProduct, product.remainingStock, product.stock]);
 
   const handleQuantityDecrease = useCallback(() => {
     if (cartProduct.quantity === 1) return;

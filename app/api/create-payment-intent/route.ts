@@ -8,10 +8,8 @@ import prismadb from "@/libs/prismadb";
 const calculateOrderAmount = (items: CartProductType[]) => {
   const totalPrice = items.reduce((acc, item) => {
     const itemTotal = (item.price + (item.dmc || 0)) * item.quantity;
-
     return acc + itemTotal;
   }, 0);
-
   return totalPrice;
 };
 

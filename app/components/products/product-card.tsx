@@ -60,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
       brand: data.brand,
       selectedImg: { ...data.images[0] },
       quantity,
-      price: data.price,
+      price: data.price - (data.discount || 0),
       dmc: data.dmc || 0,
       remainingStock: remaining,
     };

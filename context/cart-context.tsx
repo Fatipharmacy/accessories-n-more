@@ -44,18 +44,21 @@ export const CartContextProvider = (props: Props) => {
     const shopPaymentIntent: any = localStorage.getItem("paymentIntent");
     const paymentIntent: string | null = JSON.parse(shopPaymentIntent);
 
-    // Migrate old cart items to include DMC field (default to 0 if missing)
+    // Migrate old cart items to include DMC and discount fields (default to 0 if missing)
     if (storageCartProducts) {
       const migratedCart = storageCartProducts.map(item => ({
         ...item,
-        dmc: item.dmc ?? 0
+        dmc: item.dmc ?? 0,
       }));
       setCartProducts(migratedCart);
-      localStorage.setItem("cartItems", JSON.stringify(migratedCart));
+      try {
+        localStorage.setItem("cartItems", JSON.stringify(migratedCart));
+      } catch (error) {
+        console.error("Error saving migrated cart to localStorage", error);
+      }
     } else {
       setCartProducts(storageCartProducts);
     }
-    
     setPaymentIntent(paymentIntent);
   }, []);
 
@@ -97,7 +100,11 @@ export const CartContextProvider = (props: Props) => {
         updatedCart = [toAdd];
       }
 
-      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      try {
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      } catch (error) {
+        toast.error("Storage full. Cart updated for this session only.");
+      }
       return updatedCart;
     });
   }, []);
@@ -110,7 +117,11 @@ export const CartContextProvider = (props: Props) => {
         });
 
         setCartProducts(filteredProducts);
-        localStorage.setItem("cartItems", JSON.stringify(filteredProducts));
+        try {
+          localStorage.setItem("cartItems", JSON.stringify(filteredProducts));
+        } catch (error) {
+          console.error("Error saving cart to localStorage", error);
+        }
       }
     },
     [cartProducts]
@@ -139,7 +150,11 @@ export const CartContextProvider = (props: Props) => {
             updatedCart[productIndex].quantity + 1;
         }
         setCartProducts(updatedCart);
-        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        try {
+          localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        } catch (error) {
+          console.error("Error saving cart to localStorage", error);
+        }
       }
     },
     [cartProducts]
@@ -164,7 +179,11 @@ export const CartContextProvider = (props: Props) => {
             updatedCart[productIndex].quantity - 1;
         }
         setCartProducts(updatedCart);
-        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        try {
+          localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        } catch (error) {
+          console.error("Error saving cart to localStorage", error);
+        }
       }
     },
     [cartProducts]
@@ -173,13 +192,21 @@ export const CartContextProvider = (props: Props) => {
   const handleClearCart = useCallback(() => {
     setCartProducts(null);
     setCartTotalQuantity(0);
-    localStorage.setItem("cartItems", JSON.stringify(null));
+    try {
+      localStorage.setItem("cartItems", JSON.stringify(null));
+    } catch (error) {
+      console.error("Error clearing cart from localStorage", error);
+    }
   }, [cartProducts]);
 
   const handleSetPaymentIntent = useCallback(
     (value: string | null) => {
       setPaymentIntent(value);
-      localStorage.setItem("paymentIntent", JSON.stringify(value));
+      try {
+        localStorage.setItem("paymentIntent", JSON.stringify(value));
+      } catch (error) {
+        console.error("Error saving payment intent to localStorage", error);
+      }
     },
     [paymentIntent]
   );

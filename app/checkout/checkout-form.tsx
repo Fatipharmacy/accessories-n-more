@@ -268,10 +268,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           <span>Sorting & Packaging Fee:</span>
           <span>{formatPrice(sortingPackagingFee)}</span>
         </div>
-        <div className="flex justify-between text-slate-600 mb-2">
-          <span>Delivery Fee:</span>
-          <span>{formatPrice(0)}</span>
-        </div>
         <div className="flex justify-between text-slate-700 text-xl font-bold pt-2 border-t">
           <span>Total Amount:</span>
           <span>{formattedPrice}</span>

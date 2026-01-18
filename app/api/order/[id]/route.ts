@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/actions/get-current-user";
+import prismadb from "@/libs/prismadb";
 
 export async function PUT(
   request: Request,
@@ -22,47 +23,27 @@ export async function PUT(
       );
     }
 
-    // Update order using native MongoDB driver
-    const { MongoClient, ObjectId } = await import("mongodb");
-    const mongoClient = new MongoClient(process.env.DATABASE_URL!);
-    await mongoClient.connect();
+    // Verify order belongs to current user and update address using Prisma
+    const order = await prismadb.order.findUnique({
+      where: { id: params.id },
+    });
 
-    try {
-      const db = mongoClient.db("windowshopdb");
-      
-      // Verify order belongs to current user
-      const order = await db.collection("Order").findOne({
-        _id: new ObjectId(params.id),
-      });
-
-      if (!order) {
-        return NextResponse.json({ error: "Order not found" }, { status: 404 });
-      }
-
-      if (order.userId !== currentUser.id) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-      }
-
-      // Update the order with address
-      const result = await db.collection("Order").findOneAndUpdate(
-        { _id: new ObjectId(params.id) },
-        {
-          $set: {
-            address: address,
-            updatedAt: new Date(),
-          },
-        },
-        { returnDocument: "after" }
-      );
-
-      if (!result) {
-        return NextResponse.json({ error: "Failed to update order" }, { status: 500 });
-      }
-
-      return NextResponse.json(result);
-    } finally {
-      await mongoClient.close();
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
+
+    if (order.userId !== currentUser.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const updatedOrder = await prismadb.order.update({
+      where: { id: params.id },
+      data: {
+        address: address,
+      },
+    });
+
+    return NextResponse.json(updatedOrder);
   } catch (error: any) {
     console.error("Error updating order:", error);
     return NextResponse.json(
