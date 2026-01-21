@@ -63,7 +63,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ currentUser }) => {
 
   return (
     <>
-      <Heading title="Sign in to WindowShop" custom="mb-1" />
+      {/* Dynamically use app name from appConfig */}
+      <Heading title={`Sign in to ${appConfig.appName}`} custom="mb-1" />
       <Input
         id="email"
         label="Email"
