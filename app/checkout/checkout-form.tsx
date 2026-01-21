@@ -12,7 +12,12 @@ import { useRouter } from "next/navigation";
 import { X, Info } from "lucide-react";
 
 interface CheckoutFormProps {
-  handleSetPaymentSuccess: (value: boolean, deliveryInfo?: { name: string; phone: string; address: string; hostel?: string }, orderId?: string) => void;
+  handleSetPaymentSuccess: (
+    value: boolean,
+    deliveryInfo?: { name: string; phone: string; address: string; hostel?: string },
+    orderId?: string,
+    guestToken?: string
+  ) => void;
   spf: number;
   currentUser?: any;
 }

@@ -41,7 +41,6 @@ db/
 *.wt
 *.ns
 *.bson
-*.json
 data/db/
 
 # vercel
