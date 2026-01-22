@@ -4,22 +4,26 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compa
 
 // Initialize the Firebase app in the service worker
 firebase.initializeApp({
-  apiKey: "AIzaSyD6r8KH9vgb-J3R9ePgoTac35yc6ELPsp0",
-  authDomain: "lowda-83311.firebaseapp.com",
-  projectId: "lowda-83311",
-  storageBucket: "lowda-83311.firebasestorage.app",
-  messagingSenderId: "498229825506",
-  appId: "1:498229825506:web:64d553627255eee9e2b3bb"
+  apiKey: "AIzaSyCv8Ib00_Sg-ztmtLLby8uipMFrJUqB5ic",
+  authDomain: "accessnmore.firebaseapp.com",
+  projectId: "accessnmore",
+  storageBucket: "accessnmore.firebasestorage.app",
+  messagingSenderId: "965239341631",
+  appId: "1:965239341631:web:45d2da9ffcbdea7ff12e8a"
 });
 
 // Retrieve an instance of Firebase Messaging
 const messaging = firebase.messaging();
 
+// Import app name from appConfig
+importScripts('/config/appConfig.js');
+
 // Handle background messages
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  
-  const notificationTitle = payload.notification.title || 'WindowShop';
+
+  // Use appConfig.appName as default title
+  const notificationTitle = payload.notification.title || (self.appConfig && self.appConfig.appName);
   const notificationOptions = {
     body: payload.notification.body,
     icon: payload.notification.icon || '/icons/icon-192x192.png',

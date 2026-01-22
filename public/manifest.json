@@ -1,11 +1,11 @@
 {
-  "name": "lowda-inc",
-  "short_name": "lowda",
+  "name": "accessories-n-more",
+  "short_name": "accessories-n-more",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#6d0e65",
-  "description": "Homebrew electronics marketplace.",
+  "theme_color": "#4169E1",
+  "description": "Satisfy your love for accessories  with our curated collection of trendy and unique items. From fashion to gadgets, we have something for everyone.",
   "icons": [
     {
       "src": "/icon-192x192.png",

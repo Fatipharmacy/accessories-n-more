@@ -1,12 +1,12 @@
 export const appConfig = {
-  aboutUsDescription: "Your personal electronics store",
-  headerFooterBgColor: "#690854", // Default Tailwind bg-zinc-900
-  headerFooterFontColor: "#f1f5f9", // Default Tailwind text-slate-200
-  appName: "lowdaInc",
-  appDescription: "Your personal electronics store",
+  aboutUsDescription: "Satisfy your love for accessories",
+  headerFooterBgColor: "#4169E1", // Default Tailwind bg-zinc-900
+  headerFooterFontColor: "#000000", // Default Tailwind text-slate-200
+  appName: "accessories-n-more",
+  appDescription: "Satisfy your love for accessories  with our curated collection of trendy and unique items. From fashion to gadgets, we have something for everyone.",
   logoUrl: "/logo.png",
   themeColor: "#fff",
-  contactEmail: "contact@lowdainc.com",
+  contactEmail: "contact@khair.com",
   faqs: [
     {
       question: "What are the delivery times?",
